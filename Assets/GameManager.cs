@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,15 +9,20 @@ public class GameManager : MonoBehaviour
    
 
     public int score=0;
+    [SerializeField]
+    private GameObject player;
 
+
+    public TMP_Text score_text;
+    public TMP_Text highscore_text;
+    
     void Start()
     {
-       
+       player_movement player_MV=Instantiate(player).GetComponent<player_movement>();
+        player_MV.gm = this;
+        score_text.text = "score= " + score;
+        highscore_text.text = "highscore= " + PlayerPrefs.GetInt("highscore");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

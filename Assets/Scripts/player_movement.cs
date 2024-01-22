@@ -12,14 +12,14 @@ public class player_movement : MonoBehaviour
     public bool isgrounded;
     public bool iscoined;
     [SerializeField]
-    private float move_speed=100;
+    private float move_speed;
     [SerializeField]
-    private float jump_speed = 1500;
+    private float jump_speed;
    
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
-        move_speed = 80;
+        move_speed = 20;
         jump_speed=1500;
     }
 
@@ -35,6 +35,7 @@ public class player_movement : MonoBehaviour
             }
         }
         float movement = Input.GetAxisRaw("Horizontal");
+        
         rb.AddForce(new Vector3(movement, 0, 0) * move_speed );
 
 
@@ -53,11 +54,22 @@ public class player_movement : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-         if (collision.gameObject.layer == LayerMask.NameToLayer("coin"))
-            iscoined = true;
-        if (iscoined == true)
-        { gm.score += 1;
-            iscoined = false; }
+        //if (collision.gameObject.layer == LayerMask.NameToLayer("coin"))
+        //{
+        //    gm.score += 1;
+        //    Destroy(collision.gameObject);
+        //}
+        if(collision.CompareTag("Coin"))
+        {
+            gm.score += 1;
+            gm.score_text.text ="score= "+gm.score.ToString();
+            if(gm.score>PlayerPrefs.GetInt("highscore"))
+            {
+                PlayerPrefs.SetInt("highscore",gm.score);
+                gm.highscore_text.text = "highscore= " + PlayerPrefs.GetInt("highscore");
+            }
+            Destroy(collision.gameObject);
+        }
     }
     
 }
