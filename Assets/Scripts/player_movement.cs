@@ -15,6 +15,7 @@ public class player_movement : MonoBehaviour
     private float move_speed;
     [SerializeField]
     private float jump_speed;
+    public Animator animator;
    
     void Start()
     {
@@ -61,14 +62,20 @@ public class player_movement : MonoBehaviour
         //}
         if(collision.CompareTag("Coin"))
         {
+            
             gm.score += 1;
             gm.score_text.text ="score= "+gm.score.ToString();
             if(gm.score>PlayerPrefs.GetInt("highscore"))
             {
                 PlayerPrefs.SetInt("highscore",gm.score);
                 gm.highscore_text.text = "highscore= " + PlayerPrefs.GetInt("highscore");
+               
             }
-            Destroy(collision.gameObject);
+            Animator coin_anim= collision.GetComponent<Animator>();
+            coin_anim.SetTrigger("collect");
+
+            Destroy(collision.gameObject, 1);
+            
         }
     }
     
